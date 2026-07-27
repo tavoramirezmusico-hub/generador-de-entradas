@@ -815,7 +815,8 @@
                     asistentes.push({ id: doc.id, ...doc.data() });
                 });
 
-                asistentes.sort((a, b) => new Date(b.creadoEn) - new Date(a.creadoEn));
+                // ORDEN ALFABÉTICO POR NOMBRE
+                asistentes.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' }));
 
                 const total = asistentes.length;
                 const ingresados = asistentes.filter(a => a.ingresado).length;
