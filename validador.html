@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Los Hijos de Tencha - Validador</title>
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <!-- Librería para escáner QR -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
         * {
@@ -133,7 +135,8 @@
         .btn-group .btn {
             flex: 1;
         }
-        select, input {
+        select,
+        input {
             width: 100%;
             padding: 12px;
             margin-bottom: 12px;
@@ -143,7 +146,8 @@
             color: #fff;
             font-size: 1rem;
         }
-        select:focus, input:focus {
+        select:focus,
+        input:focus {
             outline: none;
             border-color: #ff6b00;
         }
@@ -310,8 +314,14 @@
             background: #2196f3;
         }
         @keyframes slideUp {
-            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
         }
         .stats {
             display: grid;
@@ -428,6 +438,9 @@
     </div>
 
     <script>
+        // ============================================================
+        // CONFIGURACIÓN DE FIREBASE
+        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyDvp_6UFymZZnqxMyL6yobJ3twLMvVkThw",
             authDomain: "base-entradas-tenchos.firebaseapp.com",
@@ -440,10 +453,17 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        // ============================================================
+        // VARIABLES GLOBALES
+        // ============================================================
         let html5QrCode = null;
         let isScanning = false;
         let ultimoEscaneo = null;
         let currentCamera = 'environment';
+
+        // ============================================================
+        // FUNCIONES PRINCIPALES
+        // ============================================================
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -469,14 +489,14 @@
 
         function startScanner() {
             if (isScanning) return;
-            
+
             const reader = document.getElementById('reader');
             document.getElementById('startScanBtn').style.display = 'none';
             document.getElementById('stopScanBtn').style.display = 'block';
             document.getElementById('switchCameraBtn').style.display = 'block';
-            
+
             html5QrCode = new Html5Qrcode("reader");
-            
+
             const config = {
                 fps: 15,
                 qrbox: { width: 280, height: 280 },
@@ -484,21 +504,18 @@
                 formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE]
             };
 
-            html5QrCode.start(
-                { facingMode: currentCamera },
-                config,
-                onScanSuccess,
-                onScanError
-            ).then(() => {
-                isScanning = true;
-                showToast('📷 Cámara activada', 'info');
-            }).catch(err => {
-                console.error('Error al iniciar cámara:', err);
-                showToast('❌ Error al acceder a la cámara', 'error');
-                document.getElementById('startScanBtn').style.display = 'block';
-                document.getElementById('stopScanBtn').style.display = 'none';
-                document.getElementById('switchCameraBtn').style.display = 'none';
-            });
+            html5QrCode.start({ facingMode: currentCamera }, config, onScanSuccess, onScanError)
+                .then(() => {
+                    isScanning = true;
+                    showToast('📷 Cámara activada', 'info');
+                })
+                .catch(err => {
+                    console.error('Error al iniciar cámara:', err);
+                    showToast('❌ Error al acceder a la cámara. Verifica permisos.', 'error');
+                    document.getElementById('startScanBtn').style.display = 'block';
+                    document.getElementById('stopScanBtn').style.display = 'none';
+                    document.getElementById('switchCameraBtn').style.display = 'none';
+                });
         }
 
         function stopScanner() {
@@ -529,7 +546,7 @@
                 return;
             }
             ultimoEscaneo = decodedText;
-            
+
             let asistenteId = null;
             try {
                 const url = new URL(decodedText);
@@ -546,11 +563,11 @@
         }
 
         function onScanError(err) {
-            // Ignorar errores
+            // Ignorar errores (son normales mientras busca)
         }
 
         // ============================================================
-        // VALIDACIÓN
+        // VALIDACIÓN DE ASISTENTES
         // ============================================================
 
         async function validarAsistente(asistenteId) {
@@ -559,15 +576,15 @@
                 const doc = await docRef.get();
 
                 if (!doc.exists) {
-                    mostrarResultado(false, '❌ No encontrado', 'Este ID no corresponde a un asistente');
+                    mostrarResultado(false, '❌ No encontrado', 'Este ID no corresponde a un asistente registrado');
                     return;
                 }
 
                 const data = doc.data();
-                
+
                 if (data.ingresado) {
-                    mostrarResultado(false, '⏳ Ya ingresó', 
-                        `${data.nombre} ya ingresó el ${new Date(data.fechaIngreso).toLocaleString()}`,
+                    mostrarResultado(false, '⏳ Ya ingresó',
+                        `${data.nombre} ya registró su ingreso el ${new Date(data.fechaIngreso).toLocaleString()}`,
                         'ya-ingreso'
                     );
                     return;
@@ -578,7 +595,7 @@
                     fechaIngreso: new Date().toISOString()
                 });
 
-                mostrarResultado(true, '✅ ¡Bienvenido!', 
+                mostrarResultado(true, '✅ ¡Bienvenido!',
                     `${data.nombre} ha ingresado al evento`,
                     'exito'
                 );
@@ -591,7 +608,7 @@
 
             } catch (error) {
                 console.error('Error al validar:', error);
-                mostrarResultado(false, '❌ Error', 'Error al procesar: ' + error.message);
+                mostrarResultado(false, '❌ Error', 'Error al procesar la validación: ' + error.message);
             }
         }
 
@@ -610,15 +627,15 @@
             const icono = exito ? '🎉' : (tipo === 'ya-ingreso' ? '⏳' : '❌');
             const estadoClass = exito ? 'estado-exito' : (tipo === 'ya-ingreso' ? 'estado-ya-ingreso' : 'estado-error');
             const estadoText = exito ? '✅ INGRESO CONFIRMADO' : (tipo === 'ya-ingreso' ? '⏳ YA INGRESÓ' : '❌ ACCESO DENEGADO');
-            
+
             container.innerHTML = `
-                <div class="resultado ${exito ? 'exito' : 'error'}">
-                    <div class="icono">${icono}</div>
-                    <div class="nombre">${titulo}</div>
-                    <div class="detalle">${mensaje}</div>
-                    <div class="estado ${estadoClass}">${estadoText}</div>
-                </div>
-            `;
+                    <div class="resultado ${exito ? 'exito' : 'error'}">
+                        <div class="icono">${icono}</div>
+                        <div class="nombre">${titulo}</div>
+                        <div class="detalle">${mensaje}</div>
+                        <div class="estado ${estadoClass}">${estadoText}</div>
+                    </div>
+                `;
         }
 
         // ============================================================
@@ -643,7 +660,7 @@
         async function cargarListaAsistentes() {
             const eventoId = document.getElementById('selectEventoLista').value;
             if (!eventoId) {
-                document.getElementById('listaAsistentes').innerHTML = 
+                document.getElementById('listaAsistentes').innerHTML =
                     '<p style="color:#666;text-align:center;padding:20px;">Selecciona un evento</p>';
                 document.getElementById('statsListaContainer').classList.add('hidden');
                 return;
@@ -677,17 +694,17 @@
                 }
 
                 list.innerHTML = asistentes.map(a => `
-                    <div class="assistant-item ${a.ingresado ? 'ingresado' : ''}">
-                        <div class="info">
-                            <div class="nombre">${a.nombre}</div>
-                            <div class="email">${a.email}</div>
-                            <span class="estado ${a.ingresado ? 'estado-ingresado' : 'estado-sin-ingresar'}">
-                                ${a.ingresado ? '✅ Ya ingresó' : '⏳ Sin ingresar'}
-                            </span>
-                            ${a.fechaIngreso ? `<span style="font-size:0.6rem;color:#666;margin-left:10px;">${new Date(a.fechaIngreso).toLocaleString()}</span>` : ''}
+                        <div class="assistant-item ${a.ingresado ? 'ingresado' : ''}">
+                            <div class="info">
+                                <div class="nombre">${a.nombre}</div>
+                                <div class="email">${a.email}</div>
+                                <span class="estado ${a.ingresado ? 'estado-ingresado' : 'estado-sin-ingresar'}">
+                                    ${a.ingresado ? '✅ Ya ingresó' : '⏳ Sin ingresar'}
+                                </span>
+                                ${a.fechaIngreso ? `<span style="font-size:0.6rem;color:#666;margin-left:10px;">${new Date(a.fechaIngreso).toLocaleString()}</span>` : ''}
+                            </div>
                         </div>
-                    </div>
-                `).join('');
+                    `).join('');
 
             } catch (error) {
                 console.error('Error al cargar asistentes:', error);
@@ -701,6 +718,7 @@
 
         cargarSelectEventos();
 
+        // Detener escáner al cambiar de tab o cerrar la página
         document.addEventListener('visibilitychange', function() {
             if (document.hidden && isScanning) {
                 stopScanner();
