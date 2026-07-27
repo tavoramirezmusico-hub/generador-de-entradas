@@ -243,6 +243,8 @@
             text-align: center;
             max-width: 400px;
             width: 95%;
+            max-height: 95vh;
+            overflow-y: auto;
         }
         .modal-content h3 {
             color: #ff6b00;
@@ -272,6 +274,7 @@
             font-weight: 600;
             font-size: 1rem;
             margin-bottom: 5px;
+            word-break: break-all;
         }
         .modal-content .datos-persona .banda {
             color: #ff6b00;
@@ -293,6 +296,32 @@
         #qrContainer #qrcode {
             display: flex;
             justify-content: center;
+        }
+        .qr-id {
+            background: #1a1a1a;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0 12px 0;
+            font-size: 0.8rem;
+            color: #888;
+            border: 1px dashed #444;
+            text-align: center;
+        }
+        .qr-id .id-valor {
+            color: #ff6b00;
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            user-select: all;
+        }
+        .qr-id .id-label {
+            display: block;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 2px;
         }
         .modal-content .btn-group {
             display: flex;
@@ -393,6 +422,19 @@
             background: #ff6b00;
             border-radius: 3px;
         }
+        /* Botón copiar ID */
+        .btn-copy-id {
+            background: none;
+            border: none;
+            color: #2196f3;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 8px;
+            text-decoration: underline;
+        }
+        .btn-copy-id:hover {
+            color: #64b5f6;
+        }
         @media (max-width: 480px) {
             .stats {
                 grid-template-columns: 1fr 1fr;
@@ -481,7 +523,7 @@
             </div>
         </div>
 
-        <!-- Modal QR mejorado -->
+        <!-- Modal QR mejorado con ID visible -->
         <div class="modal" id="qrModal">
             <div class="modal-content">
                 <h3>🎫 ENTRADA</h3>
@@ -489,6 +531,13 @@
                 
                 <div id="qrContainer">
                     <div id="qrcode"></div>
+                </div>
+
+                <!-- ID del asistente visible -->
+                <div class="qr-id">
+                    <span class="id-label">🎯 ID de validación</span>
+                    <span class="id-valor" id="qrIdAsistente">-</span>
+                    <button class="btn-copy-id" onclick="copiarId()">📋 Copiar ID</button>
                 </div>
 
                 <div class="datos-persona" id="datosPersona">
@@ -735,7 +784,6 @@
                     asistentes.push({ id: doc.id, ...doc.data() });
                 });
 
-                // Ordenar en cliente (mientras el índice se crea)
                 asistentes.sort((a, b) => new Date(b.creadoEn) - new Date(a.creadoEn));
 
                 const total = asistentes.length;
@@ -753,7 +801,6 @@
                     return;
                 }
 
-                // Obtener nombre del evento para mostrar en el QR
                 const eventoDoc = await db.collection('eventos').doc(eventoId).get();
                 const nombreEvento = eventoDoc.exists ? eventoDoc.data().nombre : 'Evento';
 
@@ -778,25 +825,23 @@
         }
 
         // ============================================================
-        // QR CODE MEJORADO CON DATOS Y DESCARGA
+        // QR CODE CON ID VISIBLE Y COPIA
         // ============================================================
 
         function mostrarQR(asistenteId, nombre, email, eventoNombre) {
             const modal = document.getElementById('qrModal');
             const container = document.getElementById('qrcode');
             
-            // Guardar datos del asistente para la descarga
             asistenteActual = { id: asistenteId, nombre, email, evento: eventoNombre };
             
-            // Mostrar datos en el modal
+            // Mostrar datos
+            document.getElementById('qrIdAsistente').textContent = asistenteId;
             document.getElementById('qrNombreAsistente').textContent = nombre;
             document.getElementById('qrEmailAsistente').textContent = email;
             document.getElementById('qrEventoAsistente').textContent = eventoNombre;
             
-            // Limpiar QR anterior
             container.innerHTML = '';
             
-            // Generar QR con URL de validación
             const url = window.location.origin + '/validador.html?id=' + asistenteId;
             
             new QRCode(container, {
@@ -816,17 +861,36 @@
             asistenteActual = null;
         }
 
+        function copiarId() {
+            const idText = document.getElementById('qrIdAsistente').textContent;
+            navigator.clipboard.writeText(idText).then(() => {
+                showToast('✅ ID copiado al portapapeles', 'success');
+            }).catch(() => {
+                // Fallback para navegadores antiguos
+                const input = document.createElement('input');
+                input.value = idText;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                showToast('✅ ID copiado al portapapeles', 'success');
+            });
+        }
+
         function descargarQR() {
             if (!asistenteActual) {
                 showToast('⚠️ No hay QR para descargar', 'error');
                 return;
             }
 
-            // Usar html2canvas para capturar el QR con los datos
             const modalContent = document.querySelector('.modal-content');
-            
-            // Añadir clase temporal para mejorar la captura
             modalContent.style.background = '#ffffff';
+            
+            // Asegurar que el texto sea visible en fondo blanco
+            const originalStyles = document.querySelectorAll('.modal-content .valor, .modal-content .subtitulo, .modal-content h3, .modal-content .banda, .modal-content .qr-id .id-valor, .modal-content .qr-id .id-label, .modal-content .label');
+            originalStyles.forEach(el => {
+                el.style.color = '#1a1a1a';
+            });
             
             html2canvas(modalContent, {
                 scale: 2,
@@ -835,23 +899,26 @@
                 useCORS: true,
                 logging: false
             }).then(canvas => {
-                // Crear enlace de descarga
                 const link = document.createElement('a');
                 link.download = `entrada_${asistenteActual.nombre.replace(/\s/g, '_')}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 
-                // Restaurar estilo
                 modalContent.style.background = '';
+                originalStyles.forEach(el => {
+                    el.style.color = '';
+                });
                 showToast('✅ QR descargado con éxito', 'success');
             }).catch(error => {
                 console.error('Error al descargar QR:', error);
                 modalContent.style.background = '';
+                originalStyles.forEach(el => {
+                    el.style.color = '';
+                });
                 showToast('❌ Error al descargar QR', 'error');
             });
         }
 
-        // Cerrar modal con ESC
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') cerrarQR();
         });
