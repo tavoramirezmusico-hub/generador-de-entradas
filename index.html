@@ -34,13 +34,27 @@
             border-bottom: 3px solid #ff6b00;
             margin-bottom: 20px;
         }
-        .header h1 {
+        .header .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .header .logo-container img {
+            height: 60px;
+            width: auto;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+        .header .logo-container h1 {
+            margin: 0;
             color: #ff6b00;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 900;
             letter-spacing: 2px;
         }
-        .header h1 span {
+        .header .logo-container h1 span {
             color: #fff;
         }
         .header p {
@@ -447,8 +461,11 @@
             .stats {
                 grid-template-columns: 1fr 1fr;
             }
-            .header h1 {
-                font-size: 1.4rem;
+            .header .logo-container h1 {
+                font-size: 1.2rem;
+            }
+            .header .logo-container img {
+                height: 45px;
             }
             .modal-content {
                 padding: 20px;
@@ -462,8 +479,12 @@
 <body>
 
     <div class="container">
+        <!-- HEADER CON LOGO -->
         <div class="header">
-            <h1>LOS HIJOS DE <span>TENCHA</span></h1>
+            <div class="logo-container">
+                <img src="img/logo.webp" alt="Los Hijos de Tencha">
+                <h1>LOS HIJOS DE <span>TENCHA</span></h1>
+            </div>
             <p>🎸 Sistema de Validación de Entradas</p>
         </div>
 
@@ -534,7 +555,10 @@
         <!-- Modal QR -->
         <div class="modal" id="qrModal">
             <div class="modal-content">
-                <h3>🎫 ENTRADA</h3>
+                <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px;">
+                    <img src="img/logo.webp" alt="Logo" style="height:35px;width:auto;">
+                    <h3 style="margin:0;">🎫 ENTRADA</h3>
+                </div>
                 <div class="subtitulo">LOS HIJOS DE TENCHA</div>
 
                 <div id="qrContainer">
@@ -673,16 +697,16 @@
                 list.innerHTML = eventos.map(e => {
                     const count = e.asistentes ? e.asistentes.length : 0;
                     return `
-                            <li onclick="seleccionarEvento('${e.id}')">
-                                <div>
-                                    <div class="event-name">${e.nombre}</div>
-                                    <div class="event-count">${count} asistentes</div>
-                                </div>
-                                <span class="event-status ${count > 0 ? 'active' : ''}">
-                                    ${count > 0 ? '🎫 ' + count : '📭 Vacío'}
-                                </span>
-                            </li>
-                        `;
+                                <li onclick="seleccionarEvento('${e.id}')">
+                                    <div>
+                                        <div class="event-name">${e.nombre}</div>
+                                        <div class="event-count">${count} asistentes</div>
+                                    </div>
+                                    <span class="event-status ${count > 0 ? 'active' : ''}">
+                                        ${count > 0 ? '🎫 ' + count : '📭 Vacío'}
+                                    </span>
+                                </li>
+                            `;
                 }).join('');
             } catch (error) {
                 console.error('Error al cargar eventos:', error);
@@ -812,18 +836,18 @@
                 const nombreEvento = eventoDoc.exists ? eventoDoc.data().nombre : 'Evento';
 
                 list.innerHTML = asistentes.map(a => `
-                            <div class="assistant-item ${a.ingresado ? 'ingresado' : ''}">
-                                <div class="info">
-                                    <div class="nombre">${a.nombre}</div>
-                                    <div class="email">${a.email}</div>
-                                    <span class="estado ${a.ingresado ? 'estado-ingresado' : 'estado-sin-ingresar'}">
-                                        ${a.ingresado ? '✅ Ya ingresó' : '⏳ Sin ingresar'}
-                                    </span>
-                                    ${a.fechaIngreso ? `<span style="font-size:0.6rem;color:#666;margin-left:10px;">${new Date(a.fechaIngreso).toLocaleString()}</span>` : ''}
+                                <div class="assistant-item ${a.ingresado ? 'ingresado' : ''}">
+                                    <div class="info">
+                                        <div class="nombre">${a.nombre}</div>
+                                        <div class="email">${a.email}</div>
+                                        <span class="estado ${a.ingresado ? 'estado-ingresado' : 'estado-sin-ingresar'}">
+                                            ${a.ingresado ? '✅ Ya ingresó' : '⏳ Sin ingresar'}
+                                        </span>
+                                        ${a.fechaIngreso ? `<span style="font-size:0.6rem;color:#666;margin-left:10px;">${new Date(a.fechaIngreso).toLocaleString()}</span>` : ''}
+                                    </div>
+                                    <button class="qr-btn" onclick="mostrarQR('${a.id}', '${a.nombre}', '${a.email}', '${nombreEvento}')">📱</button>
                                 </div>
-                                <button class="qr-btn" onclick="mostrarQR('${a.id}', '${a.nombre}', '${a.email}', '${nombreEvento}')">📱</button>
-                            </div>
-                        `).join('');
+                            `).join('');
 
             } catch (error) {
                 console.error('Error al cargar asistentes:', error);
@@ -832,7 +856,7 @@
         }
 
         // ============================================================
-        // QR CODE MEJORADO - DESCARGA SIN BOTONES
+        // QR CODE
         // ============================================================
 
         function mostrarQR(asistenteId, nombre, email, eventoNombre) {
@@ -888,7 +912,6 @@
                 return;
             }
 
-            // Crear contenedor temporal sin botones
             const tempDiv = document.createElement('div');
             tempDiv.style.position = 'absolute';
             tempDiv.style.left = '-9999px';
@@ -901,23 +924,26 @@
             document.body.appendChild(tempDiv);
 
             tempDiv.innerHTML = `
-                    <h3 style="color:#ff6b00;margin-bottom:5px;font-size:1.2rem;">🎫 ENTRADA</h3>
-                    <div style="color:#ff6b00;font-size:0.8rem;letter-spacing:2px;margin-bottom:10px;">LOS HIJOS DE TENCHA</div>
-                    <div id="qrTemp" style="display:flex;justify-content:center;background:#fff;padding:15px;border-radius:12px;margin:10px 0;"></div>
-                    <div style="background:#f5f5f5;padding:8px 12px;border-radius:6px;margin:8px 0 12px 0;font-size:0.8rem;color:#666;border:1px dashed #ddd;text-align:center;">
-                        <span style="display:block;font-size:0.6rem;text-transform:uppercase;letter-spacing:1px;color:#999;margin-bottom:2px;">🎯 ID de validación</span>
-                        <span style="color:#ff6b00;font-weight:700;font-family:monospace;font-size:0.9rem;letter-spacing:0.5px;">${asistenteActual.id}</span>
-                    </div>
-                    <div style="background:#f5f5f5;padding:12px;border-radius:8px;margin:10px 0 15px 0;text-align:left;">
-                        <div style="color:#999;font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;">Nombre</div>
-                        <div style="color:#1a1a1a;font-weight:600;font-size:1rem;margin-bottom:5px;">${asistenteActual.nombre}</div>
-                        <div style="color:#999;font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;">Correo</div>
-                        <div style="color:#1a1a1a;font-weight:600;font-size:1rem;margin-bottom:5px;">${asistenteActual.email}</div>
-                        <div style="color:#999;font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;">Evento</div>
-                        <div style="color:#1a1a1a;font-weight:600;font-size:1rem;margin-bottom:5px;">${asistenteActual.evento}</div>
-                        <div style="color:#ff6b00;font-weight:700;font-size:1.1rem;text-align:center;margin-top:5px;border-top:1px solid #ddd;padding-top:8px;">🎸 Los Hijos de Tencha</div>
-                    </div>
-                `;
+                        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px;">
+                            <img src="img/logo.webp" alt="Logo" style="height:35px;width:auto;">
+                            <h3 style="color:#ff6b00;margin:0;font-size:1.2rem;">🎫 ENTRADA</h3>
+                        </div>
+                        <div style="color:#ff6b00;font-size:0.8rem;letter-spacing:2px;margin-bottom:10px;">LOS HIJOS DE TENCHA</div>
+                        <div id="qrTemp" style="display:flex;justify-content:center;background:#fff;padding:15px;border-radius:12px;margin:10px 0;"></div>
+                        <div style="background:#f5f5f5;padding:8px 12px;border-radius:6px;margin:8px 0 12px 0;font-size:0.8rem;color:#666;border:1px dashed #ddd;text-align:center;">
+                            <span style="display:block;font-size:0.6rem;text-transform:uppercase;letter-spacing:1px;color:#999;margin-bottom:2px;">🎯 ID de validación</span>
+                            <span style="color:#ff6b00;font-weight:700;font-family:monospace;font-size:0.9rem;letter-spacing:0.5px;">${asistenteActual.id}</span>
+                        </div>
+                        <div style="background:#f5f5f5;padding:12px;border-radius:8px;margin:10px 0 15px 0;text-align:left;">
+                            <div style="color:#999;font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;">Nombre</div>
+                            <div style="color:#1a1a1a;font-weight:600;font-size:1rem;margin-bottom:5px;">${asistenteActual.nombre}</div>
+                            <div style="color:#999;font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;">Correo</div>
+                            <div style="color:#1a1a1a;font-weight:600;font-size:1rem;margin-bottom:5px;">${asistenteActual.email}</div>
+                            <div style="color:#999;font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;">Evento</div>
+                            <div style="color:#1a1a1a;font-weight:600;font-size:1rem;margin-bottom:5px;">${asistenteActual.evento}</div>
+                            <div style="color:#ff6b00;font-weight:700;font-size:1.1rem;text-align:center;margin-top:5px;border-top:1px solid #ddd;padding-top:8px;">🎸 Los Hijos de Tencha</div>
+                        </div>
+                    `;
 
             const qrContainer = tempDiv.querySelector('#qrTemp');
             const url = window.location.origin + '/validador.html?id=' + asistenteActual.id;
