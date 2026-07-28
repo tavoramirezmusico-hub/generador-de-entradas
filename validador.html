@@ -908,4 +908,123 @@
 
             } catch (error) {
                 console.error('Error al validar:', error);
-                mostrarResultado(false, '❌ Error', 'Error al proces
+                mostrarResultado(false, '❌ Error', 'Error al procesar la validación: ' + error.message);
+            }
+        }
+
+        function validarManual() {
+            const id = document.getElementById('manualId').value.trim();
+            if (!id) {
+                showToast('⚠️ Ingresa un ID', 'error');
+                return;
+            }
+            validarAsistente(id);
+            document.getElementById('manualId').value = '';
+        }
+
+        function mostrarResultado(exito, titulo, mensaje, tipo = '') {
+            const container = document.getElementById('resultadoEscaneo');
+            const icono = exito ? '🎉' : (tipo === 'ya-ingreso' ? '⏳' : '❌');
+            const estadoClass = exito ? 'estado-exito' : (tipo === 'ya-ingreso' ? 'estado-ya-ingreso' : 'estado-error');
+            const estadoText = exito ? '✅ INGRESO CONFIRMADO' : (tipo === 'ya-ingreso' ? '⏳ YA INGRESÓ' : '❌ ACCESO DENEGADO');
+
+            container.innerHTML = `
+                        <div class="resultado ${exito ? 'exito' : 'error'}">
+                            <div class="icono">${icono}</div>
+                            <div class="nombre">${titulo}</div>
+                            <div class="detalle">${mensaje}</div>
+                            <div class="estado ${estadoClass}">${estadoText}</div>
+                        </div>
+                    `;
+        }
+
+        // ============================================================
+        // LISTA DE ASISTENTES
+        // ============================================================
+
+        async function cargarSelectEventos() {
+            try {
+                const snapshot = await db.collection('eventos').orderBy('creadoEn', 'desc').get();
+                const select = document.getElementById('selectEventoLista');
+                let options = '<option value="">Selecciona un evento</option>';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    options += `<option value="${doc.id}">${data.nombre}</option>`;
+                });
+                select.innerHTML = options;
+            } catch (error) {
+                console.error('Error al cargar eventos:', error);
+            }
+        }
+
+        async function cargarListaAsistentes() {
+            const eventoId = document.getElementById('selectEventoLista').value;
+            if (!eventoId) {
+                document.getElementById('listaAsistentes').innerHTML =
+                    '<p style="color:#666;text-align:center;padding:20px;">Selecciona un evento</p>';
+                document.getElementById('statsListaContainer').classList.add('hidden');
+                return;
+            }
+
+            try {
+                const snapshot = await db.collection('asistentes')
+                    .where('eventoId', '==', eventoId)
+                    .get();
+
+                const asistentes = [];
+                snapshot.forEach(doc => {
+                    asistentes.push({ id: doc.id, ...doc.data() });
+                });
+
+                asistentes.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' }));
+
+                const total = asistentes.length;
+                const ingresados = asistentes.filter(a => a.ingresado).length;
+                const pendientes = total - ingresados;
+
+                document.getElementById('totalLista').textContent = total;
+                document.getElementById('ingresadosLista').textContent = ingresados;
+                document.getElementById('pendientesLista').textContent = pendientes;
+                document.getElementById('statsListaContainer').classList.remove('hidden');
+
+                const list = document.getElementById('listaAsistentes');
+                if (asistentes.length === 0) {
+                    list.innerHTML = '<p style="color:#666;text-align:center;padding:20px;">No hay asistentes</p>';
+                    return;
+                }
+
+                list.innerHTML = asistentes.map(a => `
+                            <div class="assistant-item ${a.ingresado ? 'ingresado' : ''}">
+                                <div class="info">
+                                    <div class="nombre">${a.nombre}</div>
+                                    <div class="email">${a.email}</div>
+                                    <span class="estado ${a.ingresado ? 'estado-ingresado' : 'estado-sin-ingresar'}">
+                                        ${a.ingresado ? '✅ Ya ingresó' : '⏳ Sin ingresar'}
+                                    </span>
+                                    ${a.fechaIngreso ? `<span style="font-size:0.6rem;color:#666;margin-left:10px;">${new Date(a.fechaIngreso).toLocaleString()}</span>` : ''}
+                                </div>
+                            </div>
+                        `).join('');
+
+            } catch (error) {
+                console.error('Error al cargar asistentes:', error);
+                showToast('❌ Error al cargar lista', 'error');
+            }
+        }
+
+        // ============================================================
+        // INICIALIZACIÓN
+        // ============================================================
+
+        verificarSesion();
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden && isScanning) {
+                stopScanner();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
