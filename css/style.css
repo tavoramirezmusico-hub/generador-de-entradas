@@ -1,0 +1,41 @@
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 20px 0 10px 0;
+            margin-top: 20px;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .footer .footer-link {
+            color: #ff6b00;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s;
+            font-weight: 600;
+        }
+
+        .footer .footer-link:hover {
+            color: #e05f00;
+            text-decoration: underline;
+        }
+
+        .footer .ig-icon {
+            color: #ff6b00;
+            transition: color 0.3s;
+            flex-shrink: 0;
+        }
+
+        .footer .footer-link:hover .ig-icon {
+            color: #e05f00;
+        }
+
+        @media (max-width: 480px) {
+            .footer {
+                font-size: 0.75rem;
+                padding: 15px 0 5px 0;
+            }
+        }
