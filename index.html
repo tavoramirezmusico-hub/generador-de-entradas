@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -17,6 +18,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #1a1a1a;
@@ -24,16 +26,117 @@
             min-height: 100vh;
             padding: 20px;
         }
+
         .container {
             max-width: 500px;
             margin: 0 auto;
         }
+
+        /* ===== LOGIN MODAL ===== */
+        .login-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-overlay.active {
+            display: flex;
+        }
+
+        .login-box {
+            background: #2a2a2a;
+            padding: 40px 30px;
+            border-radius: 16px;
+            max-width: 380px;
+            width: 95%;
+            text-align: center;
+            border: 2px solid #ff6b00;
+        }
+
+        .login-box .logo-login {
+            height: 80px;
+            width: auto;
+            margin-bottom: 15px;
+            border-radius: 12px;
+        }
+
+        .login-box h2 {
+            color: #ff6b00;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .login-box .subtitle {
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: border 0.3s;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #ff6b00;
+        }
+
+        .login-box .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #ff6b00;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-box .btn-login:hover {
+            background: #e05f00;
+            transform: scale(1.02);
+        }
+
+        .login-box .error-msg {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .login-box .error-msg.show {
+            display: block;
+        }
+
+        /* ===== HEADER ===== */
         .header {
             text-align: center;
             padding: 20px 0;
             border-bottom: 3px solid #ff6b00;
             margin-bottom: 20px;
         }
+
         .header .logo-container {
             display: flex;
             align-items: center;
@@ -41,12 +144,14 @@
             gap: 12px;
             flex-wrap: wrap;
         }
+
         .header .logo-container img {
             height: 60px;
             width: auto;
             border-radius: 8px;
             object-fit: contain;
         }
+
         .header .logo-container h1 {
             margin: 0;
             color: #ff6b00;
@@ -54,14 +159,31 @@
             font-weight: 900;
             letter-spacing: 2px;
         }
+
         .header .logo-container h1 span {
             color: #fff;
         }
+
+        .header .header-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            gap: 10px;
+        }
+
+        .header .header-actions .btn-sm {
+            padding: 6px 14px;
+            font-size: 0.7rem;
+            width: auto;
+            border-radius: 20px;
+        }
+
         .header p {
             color: #ccc;
             font-size: 0.9rem;
             margin-top: 5px;
         }
+
         .card {
             background: #2a2a2a;
             border-radius: 12px;
@@ -69,11 +191,13 @@
             margin-bottom: 20px;
             border-left: 4px solid #ff6b00;
         }
+
         .card h3 {
             color: #ff6b00;
             margin-bottom: 15px;
             font-size: 1.1rem;
         }
+
         input,
         select,
         textarea {
@@ -87,15 +211,18 @@
             font-size: 1rem;
             transition: border 0.3s;
         }
+
         input:focus,
         select:focus,
         textarea:focus {
             outline: none;
             border-color: #ff6b00;
         }
+
         input::placeholder {
             color: #666;
         }
+
         .btn {
             width: 100%;
             padding: 14px;
@@ -108,50 +235,74 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         .btn-primary {
             background: #ff6b00;
             color: #fff;
         }
+
         .btn-primary:hover {
             background: #e05f00;
             transform: scale(1.02);
         }
+
         .btn-success {
             background: #00c853;
             color: #fff;
         }
+
         .btn-success:hover {
             background: #00b34a;
         }
+
         .btn-danger {
             background: #d32f2f;
             color: #fff;
         }
+
         .btn-danger:hover {
             background: #b71c1c;
         }
+
         .btn-secondary {
             background: #444;
             color: #fff;
         }
+
         .btn-secondary:hover {
             background: #555;
         }
+
         .btn-download {
             background: #2196f3;
             color: #fff;
         }
+
         .btn-download:hover {
             background: #1976d2;
         }
+
+        .btn-outline {
+            background: transparent;
+            color: #ff6b00;
+            border: 2px solid #ff6b00;
+        }
+
+        .btn-outline:hover {
+            background: #ff6b00;
+            color: #fff;
+        }
+
         .btn-sm {
             padding: 8px 16px;
             width: auto;
             font-size: 0.8rem;
         }
+
         .event-list {
             list-style: none;
         }
+
         .event-list li {
             background: #1a1a1a;
             padding: 15px;
@@ -164,18 +315,22 @@
             cursor: pointer;
             transition: all 0.3s;
         }
+
         .event-list li:hover {
             background: #222;
             transform: translateX(5px);
         }
+
         .event-list li .event-name {
             font-weight: 600;
             color: #fff;
         }
+
         .event-list li .event-count {
             font-size: 0.8rem;
             color: #888;
         }
+
         .event-list li .event-status {
             font-size: 0.7rem;
             padding: 4px 10px;
@@ -183,10 +338,12 @@
             background: #333;
             color: #aaa;
         }
+
         .event-list li .event-status.active {
             background: #ff6b00;
             color: #fff;
         }
+
         .assistant-item {
             background: #1a1a1a;
             padding: 12px;
@@ -197,21 +354,26 @@
             align-items: center;
             border-left: 3px solid #555;
         }
+
         .assistant-item.ingresado {
             border-left-color: #00c853;
             opacity: 0.6;
         }
+
         .assistant-item .info {
             flex: 1;
         }
+
         .assistant-item .info .nombre {
             font-weight: 600;
             color: #fff;
         }
+
         .assistant-item .info .email {
             font-size: 0.8rem;
             color: #888;
         }
+
         .assistant-item .info .estado {
             font-size: 0.7rem;
             padding: 2px 10px;
@@ -219,14 +381,17 @@
             display: inline-block;
             margin-top: 4px;
         }
+
         .estado-sin-ingresar {
             background: #d32f2f;
             color: #fff;
         }
+
         .estado-ingresado {
             background: #00c853;
             color: #fff;
         }
+
         .assistant-item .qr-btn {
             background: none;
             border: none;
@@ -235,9 +400,11 @@
             cursor: pointer;
             padding: 0 10px;
         }
+
         .assistant-item .qr-btn:hover {
             transform: scale(1.2);
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -250,9 +417,11 @@
             justify-content: center;
             align-items: center;
         }
+
         .modal.active {
             display: flex;
         }
+
         .modal-content {
             background: #2a2a2a;
             padding: 30px;
@@ -263,16 +432,19 @@
             max-height: 95vh;
             overflow-y: auto;
         }
+
         .modal-content h3 {
             color: #ff6b00;
             margin-bottom: 5px;
         }
+
         .modal-content .subtitulo {
             color: #ff6b00;
             font-size: 0.8rem;
             letter-spacing: 2px;
             margin-bottom: 10px;
         }
+
         .modal-content .datos-persona {
             background: #1a1a1a;
             padding: 12px;
@@ -280,12 +452,14 @@
             margin: 10px 0 15px 0;
             text-align: left;
         }
+
         .modal-content .datos-persona .label {
             color: #888;
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         .modal-content .datos-persona .valor {
             color: #fff;
             font-weight: 600;
@@ -293,6 +467,7 @@
             margin-bottom: 5px;
             word-break: break-all;
         }
+
         .modal-content .datos-persona .banda {
             color: #ff6b00;
             font-weight: 700;
@@ -302,6 +477,7 @@
             border-top: 1px solid #333;
             padding-top: 8px;
         }
+
         #qrContainer {
             display: flex;
             justify-content: center;
@@ -310,10 +486,12 @@
             border-radius: 12px;
             margin: 10px 0;
         }
+
         #qrContainer #qrcode {
             display: flex;
             justify-content: center;
         }
+
         .qr-id {
             background: #1a1a1a;
             padding: 8px 12px;
@@ -324,6 +502,7 @@
             border: 1px dashed #444;
             text-align: center;
         }
+
         .qr-id .id-valor {
             color: #ff6b00;
             font-weight: 700;
@@ -332,6 +511,7 @@
             letter-spacing: 0.5px;
             user-select: all;
         }
+
         .qr-id .id-label {
             display: block;
             font-size: 0.6rem;
@@ -340,6 +520,7 @@
             color: #666;
             margin-bottom: 2px;
         }
+
         .btn-copy-id {
             background: none;
             border: none;
@@ -349,22 +530,27 @@
             margin-left: 8px;
             text-decoration: underline;
         }
+
         .btn-copy-id:hover {
             color: #64b5f6;
         }
+
         .modal-content .btn-group {
             display: flex;
             gap: 10px;
             margin-top: 10px;
         }
+
         .modal-content .btn-group .btn {
             flex: 1;
         }
+
         .tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
         }
+
         .tabs button {
             flex: 1;
             padding: 12px;
@@ -376,42 +562,51 @@
             cursor: pointer;
             transition: all 0.3s;
         }
+
         .tabs button.active {
             background: #ff6b00;
             color: #fff;
         }
+
         .tab-content {
             display: none;
         }
+
         .tab-content.active {
             display: block;
         }
+
         .stats {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
             margin-bottom: 20px;
         }
+
         .stats .stat {
             background: #1a1a1a;
             padding: 15px;
             border-radius: 8px;
             text-align: center;
         }
+
         .stats .stat .number {
             font-size: 1.8rem;
             font-weight: 900;
             color: #ff6b00;
         }
+
         .stats .stat .label {
             font-size: 0.7rem;
             color: #888;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         .hidden {
             display: none !important;
         }
+
         .toast {
             position: fixed;
             bottom: 20px;
@@ -427,168 +622,211 @@
             max-width: 90%;
             text-align: center;
         }
+
         .toast.show {
             display: block;
             animation: slideUp 0.3s ease;
         }
+
         .toast.success {
             background: #00c853;
         }
+
         .toast.error {
             background: #d32f2f;
         }
+
+        .toast.info {
+            background: #2196f3;
+        }
+
         @keyframes slideUp {
             from {
                 opacity: 0;
                 transform: translateX(-50%) translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(-50%) translateY(0);
             }
         }
+
         ::-webkit-scrollbar {
             width: 6px;
         }
+
         ::-webkit-scrollbar-track {
             background: #1a1a1a;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #ff6b00;
             border-radius: 3px;
         }
+
         @media (max-width: 480px) {
             .stats {
                 grid-template-columns: 1fr 1fr;
             }
+
             .header .logo-container h1 {
                 font-size: 1.2rem;
             }
+
             .header .logo-container img {
                 height: 45px;
             }
+
             .modal-content {
                 padding: 20px;
             }
+
             .modal-content .btn-group {
                 flex-direction: column;
+            }
+
+            .login-box {
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <!-- HEADER CON LOGO -->
-        <div class="header">
-            <div class="logo-container">
-                <img src="img/logo.webp" alt="Los Hijos de Tencha">
-                <h1>LOS HIJOS DE <span>TENCHA</span></h1>
-            </div>
-            <p>🎸 Sistema de Validación de Entradas</p>
+    <!-- ===== LOGIN MODAL ===== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <img src="img/logo.webp" alt="Los Hijos de Tencha" class="logo-login">
+            <h2>🔐 ACCESO RESTRINGIDO</h2>
+            <p class="subtitle">Ingresa la contraseña para continuar</p>
+            <input type="password" id="passwordInput" placeholder="Contraseña" autofocus>
+            <button class="btn-login" onclick="verificarPassword()">▶️ Ingresar</button>
+            <div class="error-msg" id="loginError">❌ Contraseña incorrecta</div>
         </div>
+    </div>
 
-        <div id="adminPanel">
-            <div class="tabs">
-                <button class="active" onclick="switchTab('eventos')">📋 Eventos</button>
-                <button onclick="switchTab('asistentes')">👤 Asistentes</button>
-                <button onclick="switchTab('crear')">➕ Crear</button>
-            </div>
-
-            <div id="tab-eventos" class="tab-content active">
-                <div class="card">
-                    <h3>📋 Eventos Creados</h3>
-                    <ul class="event-list" id="eventList">
-                        <li style="text-align:center;color:#666;padding:20px;">Cargando eventos...</li>
-                    </ul>
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <div id="mainContent" style="display:none;">
+        <div class="container">
+            <!-- HEADER CON LOGO -->
+            <div class="header">
+                <div class="logo-container">
+                    <img src="img/logo.webp" alt="Los Hijos de Tencha">
+                    <h1>LOS HIJOS DE <span>TENCHA</span></h1>
                 </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline btn-sm" onclick="window.location.href='validador.html'">📷 Ir a
+                        Validador</button>
+                    <button class="btn btn-danger btn-sm" onclick="cerrarSesion()">🚪 Salir</button>
+                </div>
+                <p>🎸 Sistema de Validación de Entradas</p>
             </div>
 
-            <div id="tab-asistentes" class="tab-content">
-                <div class="card">
-                    <h3>👤 Asistentes por Evento</h3>
-                    <select id="selectEventoAsistentes" onchange="cargarAsistentes()">
-                        <option value="">Selecciona un evento</option>
-                    </select>
-                    <div id="statsContainer" class="stats hidden">
-                        <div class="stat">
-                            <div class="number" id="totalAsistentes">0</div>
-                            <div class="label">Total</div>
-                        </div>
-                        <div class="stat">
-                            <div class="number" id="ingresadosCount">0</div>
-                            <div class="label">Ingresados</div>
-                        </div>
-                        <div class="stat">
-                            <div class="number" id="pendientesCount">0</div>
-                            <div class="label">Pendientes</div>
-                        </div>
-                    </div>
-                    <div id="asistentesList">
-                        <p style="color:#666;text-align:center;padding:20px;">Selecciona un evento para ver los asistentes</p>
+            <div id="adminPanel">
+                <div class="tabs">
+                    <button class="active" onclick="switchTab('eventos')">📋 Eventos</button>
+                    <button onclick="switchTab('asistentes')">👤 Asistentes</button>
+                    <button onclick="switchTab('crear')">➕ Crear</button>
+                </div>
+
+                <div id="tab-eventos" class="tab-content active">
+                    <div class="card">
+                        <h3>📋 Eventos Creados</h3>
+                        <ul class="event-list" id="eventList">
+                            <li style="text-align:center;color:#666;padding:20px;">Cargando eventos...</li>
+                        </ul>
                     </div>
                 </div>
-            </div>
 
-            <div id="tab-crear" class="tab-content">
-                <div class="card">
-                    <h3>🎯 Crear Nuevo Evento</h3>
-                    <input type="text" id="eventoNombre" placeholder="Nombre del evento" />
-                    <input type="date" id="eventoFecha" />
-                    <input type="text" id="eventoLugar" placeholder="Lugar (opcional)" />
-                    <textarea id="eventoDescripcion" placeholder="Descripción (opcional)" rows="2"></textarea>
-                    <button class="btn btn-primary" onclick="crearEvento()">🎯 Crear Evento</button>
+                <div id="tab-asistentes" class="tab-content">
+                    <div class="card">
+                        <h3>👤 Asistentes por Evento</h3>
+                        <select id="selectEventoAsistentes" onchange="cargarAsistentes()">
+                            <option value="">Selecciona un evento</option>
+                        </select>
+                        <div id="statsContainer" class="stats hidden">
+                            <div class="stat">
+                                <div class="number" id="totalAsistentes">0</div>
+                                <div class="label">Total</div>
+                            </div>
+                            <div class="stat">
+                                <div class="number" id="ingresadosCount">0</div>
+                                <div class="label">Ingresados</div>
+                            </div>
+                            <div class="stat">
+                                <div class="number" id="pendientesCount">0</div>
+                                <div class="label">Pendientes</div>
+                            </div>
+                        </div>
+                        <div id="asistentesList">
+                            <p style="color:#666;text-align:center;padding:20px;">Selecciona un evento para ver los
+                                asistentes</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <h3>➕ Agregar Asistente</h3>
-                    <select id="selectEventoAgregar">
-                        <option value="">Selecciona un evento</option>
-                    </select>
-                    <input type="text" id="asistenteNombre" placeholder="Nombre completo" />
-                    <input type="email" id="asistenteEmail" placeholder="Correo electrónico" />
-                    <button class="btn btn-success" onclick="agregarAsistente()">✅ Agregar Asistente</button>
+                <div id="tab-crear" class="tab-content">
+                    <div class="card">
+                        <h3>🎯 Crear Nuevo Evento</h3>
+                        <input type="text" id="eventoNombre" placeholder="Nombre del evento" />
+                        <input type="date" id="eventoFecha" />
+                        <input type="text" id="eventoLugar" placeholder="Lugar (opcional)" />
+                        <textarea id="eventoDescripcion" placeholder="Descripción (opcional)" rows="2"></textarea>
+                        <button class="btn btn-primary" onclick="crearEvento()">🎯 Crear Evento</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>➕ Agregar Asistente</h3>
+                        <select id="selectEventoAgregar">
+                            <option value="">Selecciona un evento</option>
+                        </select>
+                        <input type="text" id="asistenteNombre" placeholder="Nombre completo" />
+                        <input type="email" id="asistenteEmail" placeholder="Correo electrónico" />
+                        <button class="btn btn-success" onclick="agregarAsistente()">✅ Agregar Asistente</button>
+                    </div>
                 </div>
             </div>
+
+            <!-- Modal QR -->
+            <div class="modal" id="qrModal">
+                <div class="modal-content">
+                    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px;">
+                        <img src="img/logo.webp" alt="Logo" style="height:35px;width:auto;">
+                        <h3 style="margin:0;">🎫 ENTRADA</h3>
+                    </div>
+                    <div class="subtitulo">LOS HIJOS DE TENCHA</div>
+
+                    <div id="qrContainer">
+                        <div id="qrcode"></div>
+                    </div>
+
+                    <div class="qr-id">
+                        <span class="id-label">🎯 ID de validación</span>
+                        <span class="id-valor" id="qrIdAsistente">-</span>
+                        <button class="btn-copy-id" onclick="copiarId()">📋 Copiar ID</button>
+                    </div>
+
+                    <div class="datos-persona" id="datosPersona">
+                        <div class="label">Nombre</div>
+                        <div class="valor" id="qrNombreAsistente">-</div>
+                        <div class="label">Correo</div>
+                        <div class="valor" id="qrEmailAsistente">-</div>
+                        <div class="label">Evento</div>
+                        <div class="valor" id="qrEventoAsistente">-</div>
+                        <div class="banda">🎸 Los Hijos de Tencha</div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-download" onclick="descargarQR()">📥 Descargar QR</button>
+                        <button class="btn btn-secondary" onclick="cerrarQR()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="toast" id="toast"></div>
         </div>
-
-        <!-- Modal QR -->
-        <div class="modal" id="qrModal">
-            <div class="modal-content">
-                <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px;">
-                    <img src="img/logo.webp" alt="Logo" style="height:35px;width:auto;">
-                    <h3 style="margin:0;">🎫 ENTRADA</h3>
-                </div>
-                <div class="subtitulo">LOS HIJOS DE TENCHA</div>
-
-                <div id="qrContainer">
-                    <div id="qrcode"></div>
-                </div>
-
-                <div class="qr-id">
-                    <span class="id-label">🎯 ID de validación</span>
-                    <span class="id-valor" id="qrIdAsistente">-</span>
-                    <button class="btn-copy-id" onclick="copiarId()">📋 Copiar ID</button>
-                </div>
-
-                <div class="datos-persona" id="datosPersona">
-                    <div class="label">Nombre</div>
-                    <div class="valor" id="qrNombreAsistente">-</div>
-                    <div class="label">Correo</div>
-                    <div class="valor" id="qrEmailAsistente">-</div>
-                    <div class="label">Evento</div>
-                    <div class="valor" id="qrEventoAsistente">-</div>
-                    <div class="banda">🎸 Los Hijos de Tencha</div>
-                </div>
-
-                <div class="btn-group">
-                    <button class="btn btn-download" onclick="descargarQR()">📥 Descargar QR</button>
-                    <button class="btn btn-secondary" onclick="cerrarQR()">Cerrar</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="toast" id="toast"></div>
     </div>
 
     <script>
@@ -608,6 +846,58 @@
         const db = firebase.firestore();
 
         // ============================================================
+        // SISTEMA DE LOGIN
+        // ============================================================
+        const PASSWORD = 'tencha2026';
+
+        function verificarPassword() {
+            const input = document.getElementById('passwordInput');
+            const error = document.getElementById('loginError');
+            const pass = input.value.trim();
+
+            if (pass === PASSWORD) {
+                error.classList.remove('show');
+                document.getElementById('loginOverlay').classList.remove('active');
+                document.getElementById('mainContent').style.display = 'block';
+                localStorage.setItem('tencha_logged_in', 'true');
+                iniciarApp();
+            } else {
+                error.classList.add('show');
+                input.value = '';
+                input.focus();
+                setTimeout(() => error.classList.remove('show'), 3000);
+            }
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('tencha_logged_in');
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('loginOverlay').classList.add('active');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordInput').focus();
+        }
+
+        // Verificar sesión al cargar
+        function verificarSesion() {
+            if (localStorage.getItem('tencha_logged_in') === 'true') {
+                document.getElementById('loginOverlay').classList.remove('active');
+                document.getElementById('mainContent').style.display = 'block';
+                iniciarApp();
+            } else {
+                document.getElementById('loginOverlay').classList.add('active');
+                document.getElementById('mainContent').style.display = 'none';
+                setTimeout(() => document.getElementById('passwordInput').focus(), 300);
+            }
+        }
+
+        // Enter para login
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && document.getElementById('loginOverlay').classList.contains('active')) {
+                verificarPassword();
+            }
+        });
+
+        // ============================================================
         // VARIABLES GLOBALES
         // ============================================================
         let eventos = [];
@@ -618,6 +908,14 @@
         // ============================================================
         // FUNCIONES PRINCIPALES
         // ============================================================
+
+        function iniciarApp() {
+            cargarEventos();
+            cargarSelects();
+            cargarAsistentes();
+            console.log('🚀 Sistema de entradas Los Hijos de Tencha iniciado');
+            console.log('📡 Conectado a Firebase:', firebaseConfig.projectId);
+        }
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -815,7 +1113,6 @@
                     asistentes.push({ id: doc.id, ...doc.data() });
                 });
 
-                // ORDEN ALFABÉTICO POR NOMBRE
                 asistentes.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' }));
 
                 const total = asistentes.length;
@@ -980,7 +1277,7 @@
             }, 500);
         }
 
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') cerrarQR();
         });
 
@@ -988,13 +1285,9 @@
         // INICIALIZACIÓN
         // ============================================================
 
-        cargarEventos();
-        cargarSelects();
-        cargarAsistentes();
-
-        console.log('🚀 Sistema de entradas Los Hijos de Tencha iniciado');
-        console.log('📡 Conectado a Firebase:', firebaseConfig.projectId);
+        verificarSesion();
     </script>
 
 </body>
+
 </html>

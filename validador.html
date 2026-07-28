@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -15,6 +16,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #1a1a1a;
@@ -22,16 +24,117 @@
             min-height: 100vh;
             padding: 20px;
         }
+
         .container {
             max-width: 500px;
             margin: 0 auto;
         }
+
+        /* ===== LOGIN MODAL ===== */
+        .login-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-overlay.active {
+            display: flex;
+        }
+
+        .login-box {
+            background: #2a2a2a;
+            padding: 40px 30px;
+            border-radius: 16px;
+            max-width: 380px;
+            width: 95%;
+            text-align: center;
+            border: 2px solid #ff6b00;
+        }
+
+        .login-box .logo-login {
+            height: 80px;
+            width: auto;
+            margin-bottom: 15px;
+            border-radius: 12px;
+        }
+
+        .login-box h2 {
+            color: #ff6b00;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .login-box .subtitle {
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: border 0.3s;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #ff6b00;
+        }
+
+        .login-box .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #ff6b00;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-box .btn-login:hover {
+            background: #e05f00;
+            transform: scale(1.02);
+        }
+
+        .login-box .error-msg {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .login-box .error-msg.show {
+            display: block;
+        }
+
+        /* ===== HEADER ===== */
         .header {
             text-align: center;
             padding: 20px 0;
             border-bottom: 3px solid #ff6b00;
             margin-bottom: 20px;
         }
+
         .header .logo-container {
             display: flex;
             align-items: center;
@@ -39,12 +142,14 @@
             gap: 12px;
             flex-wrap: wrap;
         }
+
         .header .logo-container img {
             height: 60px;
             width: auto;
             border-radius: 8px;
             object-fit: contain;
         }
+
         .header .logo-container h1 {
             margin: 0;
             color: #ff6b00;
@@ -52,14 +157,31 @@
             font-weight: 900;
             letter-spacing: 2px;
         }
+
         .header .logo-container h1 span {
             color: #fff;
         }
+
+        .header .header-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            gap: 10px;
+        }
+
+        .header .header-actions .btn-sm {
+            padding: 6px 14px;
+            font-size: 0.7rem;
+            width: auto;
+            border-radius: 20px;
+        }
+
         .header p {
             color: #ccc;
             font-size: 0.9rem;
             margin-top: 5px;
         }
+
         .card {
             background: #2a2a2a;
             border-radius: 12px;
@@ -67,11 +189,13 @@
             margin-bottom: 20px;
             border-left: 4px solid #ff6b00;
         }
+
         .card h3 {
             color: #ff6b00;
             margin-bottom: 15px;
             font-size: 1.1rem;
         }
+
         .card .instrucciones {
             color: #aaa;
             font-size: 0.9rem;
@@ -81,13 +205,16 @@
             border-radius: 8px;
             border-left: 3px solid #ff6b00;
         }
+
         .card .instrucciones li {
             margin-bottom: 5px;
             list-style: none;
         }
+
         .card .instrucciones li::before {
             content: "💡 ";
         }
+
         .btn {
             width: 100%;
             padding: 14px;
@@ -100,55 +227,80 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         .btn-primary {
             background: #ff6b00;
             color: #fff;
         }
+
         .btn-primary:hover {
             background: #e05f00;
             transform: scale(1.02);
         }
+
         .btn-success {
             background: #00c853;
             color: #fff;
         }
+
         .btn-success:hover {
             background: #00b34a;
         }
+
         .btn-danger {
             background: #d32f2f;
             color: #fff;
         }
+
         .btn-danger:hover {
             background: #b71c1c;
         }
+
         .btn-secondary {
             background: #444;
             color: #fff;
         }
+
         .btn-secondary:hover {
             background: #555;
         }
+
         .btn-warning {
             background: #ff9800;
             color: #fff;
         }
+
         .btn-warning:hover {
             background: #e68900;
         }
+
+        .btn-outline {
+            background: transparent;
+            color: #ff6b00;
+            border: 2px solid #ff6b00;
+        }
+
+        .btn-outline:hover {
+            background: #ff6b00;
+            color: #fff;
+        }
+
         .btn-sm {
             padding: 8px 16px;
             width: auto;
             font-size: 0.8rem;
         }
+
         .btn-group {
             display: flex;
             gap: 10px;
             margin-top: 10px;
         }
+
         .btn-group .btn {
             flex: 1;
         }
+
         select,
         input {
             width: 100%;
@@ -160,11 +312,13 @@
             color: #fff;
             font-size: 1rem;
         }
+
         select:focus,
         input:focus {
             outline: none;
             border-color: #ff6b00;
         }
+
         #reader {
             width: 100%;
             max-width: 400px;
@@ -174,21 +328,25 @@
             background: #000;
             min-height: 300px;
         }
+
         #reader video {
             border-radius: 12px;
             width: 100%;
             height: auto;
         }
+
         .scanner-controls {
             display: flex;
             gap: 10px;
             margin-top: 10px;
             flex-wrap: wrap;
         }
+
         .scanner-controls .btn {
             flex: 1;
             min-width: 80px;
         }
+
         .resultado {
             background: #1a1a1a;
             padding: 20px;
@@ -197,26 +355,32 @@
             text-align: center;
             border: 2px solid #444;
         }
+
         .resultado.exito {
             border-color: #00c853;
         }
+
         .resultado.error {
             border-color: #d32f2f;
         }
+
         .resultado .icono {
             font-size: 3rem;
             margin-bottom: 10px;
         }
+
         .resultado .nombre {
             font-size: 1.3rem;
             font-weight: 700;
             color: #fff;
         }
+
         .resultado .detalle {
             color: #aaa;
             font-size: 0.9rem;
             margin-top: 5px;
         }
+
         .resultado .estado {
             display: inline-block;
             padding: 4px 16px;
@@ -224,18 +388,22 @@
             margin-top: 10px;
             font-weight: 600;
         }
+
         .estado-exito {
             background: #00c853;
             color: #fff;
         }
+
         .estado-error {
             background: #d32f2f;
             color: #fff;
         }
+
         .estado-ya-ingreso {
             background: #ff9800;
             color: #fff;
         }
+
         .assistant-item {
             background: #1a1a1a;
             padding: 12px;
@@ -246,18 +414,22 @@
             align-items: center;
             border-left: 3px solid #555;
         }
+
         .assistant-item.ingresado {
             border-left-color: #00c853;
             opacity: 0.6;
         }
+
         .assistant-item .info .nombre {
             font-weight: 600;
             color: #fff;
         }
+
         .assistant-item .info .email {
             font-size: 0.8rem;
             color: #888;
         }
+
         .assistant-item .info .estado {
             font-size: 0.7rem;
             padding: 2px 10px;
@@ -265,19 +437,23 @@
             display: inline-block;
             margin-top: 4px;
         }
+
         .estado-sin-ingresar {
             background: #d32f2f;
             color: #fff;
         }
+
         .estado-ingresado {
             background: #00c853;
             color: #fff;
         }
+
         .tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
         }
+
         .tabs button {
             flex: 1;
             padding: 12px;
@@ -289,16 +465,20 @@
             cursor: pointer;
             transition: all 0.3s;
         }
+
         .tabs button.active {
             background: #ff6b00;
             color: #fff;
         }
+
         .tab-content {
             display: none;
         }
+
         .tab-content.active {
             display: block;
         }
+
         .toast {
             position: fixed;
             bottom: 20px;
@@ -314,148 +494,191 @@
             max-width: 90%;
             text-align: center;
         }
+
         .toast.show {
             display: block;
             animation: slideUp 0.3s ease;
         }
+
         .toast.success {
             background: #00c853;
         }
+
         .toast.error {
             background: #d32f2f;
         }
+
         .toast.info {
             background: #2196f3;
         }
+
         @keyframes slideUp {
             from {
                 opacity: 0;
                 transform: translateX(-50%) translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(-50%) translateY(0);
             }
         }
+
         .stats {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
             margin-bottom: 20px;
         }
+
         .stats .stat {
             background: #1a1a1a;
             padding: 15px;
             border-radius: 8px;
             text-align: center;
         }
+
         .stats .stat .number {
             font-size: 1.8rem;
             font-weight: 900;
             color: #ff6b00;
         }
+
         .stats .stat .label {
             font-size: 0.7rem;
             color: #888;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         .hidden {
             display: none !important;
         }
+
         .full-width {
             width: 100%;
         }
+
         @media (max-width: 480px) {
             .stats {
                 grid-template-columns: 1fr 1fr;
             }
+
             .header .logo-container h1 {
                 font-size: 1.2rem;
             }
+
             .header .logo-container img {
                 height: 45px;
             }
+
             .btn-group {
                 flex-direction: column;
+            }
+
+            .login-box {
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <!-- HEADER CON LOGO -->
-        <div class="header">
-            <div class="logo-container">
-                <img src="img/logo.webp" alt="Los Hijos de Tencha">
-                <h1>LOS HIJOS DE <span>TENCHA</span></h1>
-            </div>
-            <p>🎸 Validador de Entradas</p>
+    <!-- ===== LOGIN MODAL ===== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <img src="img/logo.webp" alt="Los Hijos de Tencha" class="logo-login">
+            <h2>🔐 ACCESO RESTRINGIDO</h2>
+            <p class="subtitle">Ingresa la contraseña para continuar</p>
+            <input type="password" id="passwordInput" placeholder="Contraseña" autofocus>
+            <button class="btn-login" onclick="verificarPassword()">▶️ Ingresar</button>
+            <div class="error-msg" id="loginError">❌ Contraseña incorrecta</div>
         </div>
+    </div>
 
-        <div class="tabs">
-            <button class="active" onclick="switchTab('escaner')">📷 Escáner</button>
-            <button onclick="switchTab('lista')">📋 Lista</button>
-        </div>
-
-        <!-- Tab: Escáner -->
-        <div id="tab-escaner" class="tab-content active">
-            <div class="card">
-                <h3>📷 Escanear Código QR</h3>
-                <div class="instrucciones">
-                    <li>Asegúrate de tener buena iluminación</li>
-                    <li>Acerca el QR lentamente a la cámara</li>
-                    <li>Mantén el QR quieto y en foco</li>
-                    <li>Si no funciona, usa el ID manual</li>
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <div id="mainContent" style="display:none;">
+        <div class="container">
+            <!-- HEADER CON LOGO -->
+            <div class="header">
+                <div class="logo-container">
+                    <img src="img/logo.webp" alt="Los Hijos de Tencha">
+                    <h1>LOS HIJOS DE <span>TENCHA</span></h1>
                 </div>
-                <div id="reader"></div>
-                <div class="scanner-controls">
-                    <button class="btn btn-primary" id="startScanBtn" onclick="startScanner()">▶️ Iniciar</button>
-                    <button class="btn btn-danger" id="stopScanBtn" onclick="stopScanner()" style="display:none;">⏹️ Detener</button>
-                    <button class="btn btn-warning" id="switchCameraBtn" onclick="switchCamera()" style="display:none;">🔄 Cámara</button>
+                <div class="header-actions">
+                    <button class="btn btn-outline btn-sm" onclick="window.location.href='index.html'">⚙️ Ir a
+                        Admin</button>
+                    <button class="btn btn-danger btn-sm" onclick="cerrarSesion()">🚪 Salir</button>
                 </div>
-                <div id="resultadoEscaneo"></div>
+                <p>🎸 Validador de Entradas</p>
             </div>
 
-            <div class="card">
-                <h3>🔑 Validación Manual</h3>
-                <p style="color:#aaa;font-size:0.8rem;margin-bottom:10px;">
-                    Si el escáner no funciona, copia y pega el ID de la entrada
-                </p>
-                <input type="text" id="manualId" placeholder="ID del asistente (ej: abc123)" />
-                <button class="btn btn-secondary" onclick="validarManual()">🔍 Validar</button>
+            <div class="tabs">
+                <button class="active" onclick="switchTab('escaner')">📷 Escáner</button>
+                <button onclick="switchTab('lista')">📋 Lista</button>
             </div>
-        </div>
 
-        <!-- Tab: Lista -->
-        <div id="tab-lista" class="tab-content">
-            <div class="card">
-                <h3>📋 Asistentes por Evento</h3>
-                <select id="selectEventoLista" onchange="cargarListaAsistentes()">
-                    <option value="">Selecciona un evento</option>
-                </select>
-                <div id="statsListaContainer" class="stats hidden">
-                    <div class="stat">
-                        <div class="number" id="totalLista">0</div>
-                        <div class="label">Total</div>
+            <!-- Tab: Escáner -->
+            <div id="tab-escaner" class="tab-content active">
+                <div class="card">
+                    <h3>📷 Escanear Código QR</h3>
+                    <div class="instrucciones">
+                        <li>Asegúrate de tener buena iluminación</li>
+                        <li>Acerca el QR lentamente a la cámara</li>
+                        <li>Mantén el QR quieto y en foco</li>
+                        <li>Si no funciona, usa el ID manual</li>
                     </div>
-                    <div class="stat">
-                        <div class="number" id="ingresadosLista">0</div>
-                        <div class="label">Ingresados</div>
+                    <div id="reader"></div>
+                    <div class="scanner-controls">
+                        <button class="btn btn-primary" id="startScanBtn" onclick="startScanner()">▶️ Iniciar</button>
+                        <button class="btn btn-danger" id="stopScanBtn" onclick="stopScanner()" style="display:none;">⏹️
+                            Detener</button>
+                        <button class="btn btn-warning" id="switchCameraBtn" onclick="switchCamera()"
+                            style="display:none;">🔄 Cámara</button>
                     </div>
-                    <div class="stat">
-                        <div class="number" id="pendientesLista">0</div>
-                        <div class="label">Pendientes</div>
-                    </div>
+                    <div id="resultadoEscaneo"></div>
                 </div>
-                <div id="listaAsistentes">
-                    <p style="color:#666;text-align:center;padding:20px;">Selecciona un evento</p>
+
+                <div class="card">
+                    <h3>🔑 Validación Manual</h3>
+                    <p style="color:#aaa;font-size:0.8rem;margin-bottom:10px;">
+                        Si el escáner no funciona, copia y pega el ID de la entrada
+                    </p>
+                    <input type="text" id="manualId" placeholder="ID del asistente (ej: abc123)" />
+                    <button class="btn btn-secondary" onclick="validarManual()">🔍 Validar</button>
                 </div>
             </div>
-        </div>
 
-        <div class="toast" id="toast"></div>
+            <!-- Tab: Lista -->
+            <div id="tab-lista" class="tab-content">
+                <div class="card">
+                    <h3>📋 Asistentes por Evento</h3>
+                    <select id="selectEventoLista" onchange="cargarListaAsistentes()">
+                        <option value="">Selecciona un evento</option>
+                    </select>
+                    <div id="statsListaContainer" class="stats hidden">
+                        <div class="stat">
+                            <div class="number" id="totalLista">0</div>
+                            <div class="label">Total</div>
+                        </div>
+                        <div class="stat">
+                            <div class="number" id="ingresadosLista">0</div>
+                            <div class="label">Ingresados</div>
+                        </div>
+                        <div class="stat">
+                            <div class="number" id="pendientesLista">0</div>
+                            <div class="label">Pendientes</div>
+                        </div>
+                    </div>
+                    <div id="listaAsistentes">
+                        <p style="color:#666;text-align:center;padding:20px;">Selecciona un evento</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="toast" id="toast"></div>
+        </div>
     </div>
 
     <script>
@@ -475,6 +698,56 @@
         const db = firebase.firestore();
 
         // ============================================================
+        // SISTEMA DE LOGIN
+        // ============================================================
+        const PASSWORD = 'tencha2026';
+
+        function verificarPassword() {
+            const input = document.getElementById('passwordInput');
+            const error = document.getElementById('loginError');
+            const pass = input.value.trim();
+
+            if (pass === PASSWORD) {
+                error.classList.remove('show');
+                document.getElementById('loginOverlay').classList.remove('active');
+                document.getElementById('mainContent').style.display = 'block';
+                localStorage.setItem('tencha_logged_in', 'true');
+                iniciarApp();
+            } else {
+                error.classList.add('show');
+                input.value = '';
+                input.focus();
+                setTimeout(() => error.classList.remove('show'), 3000);
+            }
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('tencha_logged_in');
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('loginOverlay').classList.add('active');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordInput').focus();
+        }
+
+        function verificarSesion() {
+            if (localStorage.getItem('tencha_logged_in') === 'true') {
+                document.getElementById('loginOverlay').classList.remove('active');
+                document.getElementById('mainContent').style.display = 'block';
+                iniciarApp();
+            } else {
+                document.getElementById('loginOverlay').classList.add('active');
+                document.getElementById('mainContent').style.display = 'none';
+                setTimeout(() => document.getElementById('passwordInput').focus(), 300);
+            }
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && document.getElementById('loginOverlay').classList.contains('active')) {
+                verificarPassword();
+            }
+        });
+
+        // ============================================================
         // VARIABLES GLOBALES
         // ============================================================
         let html5QrCode = null;
@@ -485,6 +758,12 @@
         // ============================================================
         // FUNCIONES PRINCIPALES
         // ============================================================
+
+        function iniciarApp() {
+            cargarSelectEventos();
+            console.log('🚀 Validador de entradas Los Hijos de Tencha iniciado');
+            console.log('📡 Conectado a Firebase:', firebaseConfig.projectId);
+        }
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -629,126 +908,4 @@
 
             } catch (error) {
                 console.error('Error al validar:', error);
-                mostrarResultado(false, '❌ Error', 'Error al procesar la validación: ' + error.message);
-            }
-        }
-
-        function validarManual() {
-            const id = document.getElementById('manualId').value.trim();
-            if (!id) {
-                showToast('⚠️ Ingresa un ID', 'error');
-                return;
-            }
-            validarAsistente(id);
-            document.getElementById('manualId').value = '';
-        }
-
-        function mostrarResultado(exito, titulo, mensaje, tipo = '') {
-            const container = document.getElementById('resultadoEscaneo');
-            const icono = exito ? '🎉' : (tipo === 'ya-ingreso' ? '⏳' : '❌');
-            const estadoClass = exito ? 'estado-exito' : (tipo === 'ya-ingreso' ? 'estado-ya-ingreso' : 'estado-error');
-            const estadoText = exito ? '✅ INGRESO CONFIRMADO' : (tipo === 'ya-ingreso' ? '⏳ YA INGRESÓ' : '❌ ACCESO DENEGADO');
-
-            container.innerHTML = `
-                        <div class="resultado ${exito ? 'exito' : 'error'}">
-                            <div class="icono">${icono}</div>
-                            <div class="nombre">${titulo}</div>
-                            <div class="detalle">${mensaje}</div>
-                            <div class="estado ${estadoClass}">${estadoText}</div>
-                        </div>
-                    `;
-        }
-
-        // ============================================================
-        // LISTA DE ASISTENTES
-        // ============================================================
-
-        async function cargarSelectEventos() {
-            try {
-                const snapshot = await db.collection('eventos').orderBy('creadoEn', 'desc').get();
-                const select = document.getElementById('selectEventoLista');
-                let options = '<option value="">Selecciona un evento</option>';
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    options += `<option value="${doc.id}">${data.nombre}</option>`;
-                });
-                select.innerHTML = options;
-            } catch (error) {
-                console.error('Error al cargar eventos:', error);
-            }
-        }
-
-        async function cargarListaAsistentes() {
-            const eventoId = document.getElementById('selectEventoLista').value;
-            if (!eventoId) {
-                document.getElementById('listaAsistentes').innerHTML =
-                    '<p style="color:#666;text-align:center;padding:20px;">Selecciona un evento</p>';
-                document.getElementById('statsListaContainer').classList.add('hidden');
-                return;
-            }
-
-            try {
-                const snapshot = await db.collection('asistentes')
-                    .where('eventoId', '==', eventoId)
-                    .get();
-
-                const asistentes = [];
-                snapshot.forEach(doc => {
-                    asistentes.push({ id: doc.id, ...doc.data() });
-                });
-
-                // ORDEN ALFABÉTICO POR NOMBRE
-                asistentes.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' }));
-
-                const total = asistentes.length;
-                const ingresados = asistentes.filter(a => a.ingresado).length;
-                const pendientes = total - ingresados;
-
-                document.getElementById('totalLista').textContent = total;
-                document.getElementById('ingresadosLista').textContent = ingresados;
-                document.getElementById('pendientesLista').textContent = pendientes;
-                document.getElementById('statsListaContainer').classList.remove('hidden');
-
-                const list = document.getElementById('listaAsistentes');
-                if (asistentes.length === 0) {
-                    list.innerHTML = '<p style="color:#666;text-align:center;padding:20px;">No hay asistentes</p>';
-                    return;
-                }
-
-                list.innerHTML = asistentes.map(a => `
-                            <div class="assistant-item ${a.ingresado ? 'ingresado' : ''}">
-                                <div class="info">
-                                    <div class="nombre">${a.nombre}</div>
-                                    <div class="email">${a.email}</div>
-                                    <span class="estado ${a.ingresado ? 'estado-ingresado' : 'estado-sin-ingresar'}">
-                                        ${a.ingresado ? '✅ Ya ingresó' : '⏳ Sin ingresar'}
-                                    </span>
-                                    ${a.fechaIngreso ? `<span style="font-size:0.6rem;color:#666;margin-left:10px;">${new Date(a.fechaIngreso).toLocaleString()}</span>` : ''}
-                                </div>
-                            </div>
-                        `).join('');
-
-            } catch (error) {
-                console.error('Error al cargar asistentes:', error);
-                showToast('❌ Error al cargar lista', 'error');
-            }
-        }
-
-        // ============================================================
-        // INICIALIZACIÓN
-        // ============================================================
-
-        cargarSelectEventos();
-
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden && isScanning) {
-                stopScanner();
-            }
-        });
-
-        console.log('🚀 Validador de entradas Los Hijos de Tencha iniciado');
-        console.log('📡 Conectado a Firebase:', firebaseConfig.projectId);
-    </script>
-
-</body>
-</html>
+                mostrarResultado(false, '❌ Error', 'Error al proces
