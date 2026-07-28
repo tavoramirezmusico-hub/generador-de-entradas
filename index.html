@@ -699,7 +699,7 @@
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
             <img src="img/logo.webp" alt="Los Hijos de Tencha" class="logo-login">
-            <h2>🔐 ACCESO RESTRINGIDO</h2>
+            <h2>🔐 ADMINISTRACIÓN</h2>
             <p class="subtitle">Ingresa la contraseña para continuar</p>
             <input type="password" id="passwordInput" placeholder="Contraseña" autofocus>
             <button class="btn-login" onclick="verificarPassword()">▶️ Ingresar</button>
@@ -717,8 +717,7 @@
                     <h1>LOS HIJOS DE <span>TENCHA</span></h1>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-outline btn-sm" onclick="window.location.href='validador.html'">📷 Ir a
-                        Validador</button>
+                    <button class="btn btn-outline btn-sm" onclick="irAValidador()">📷 Ir a Validador</button>
                     <button class="btn btn-danger btn-sm" onclick="cerrarSesion()">🚪 Salir</button>
                 </div>
                 <p>🎸 Sistema de Validación de Entradas</p>
@@ -846,9 +845,10 @@
         const db = firebase.firestore();
 
         // ============================================================
-        // SISTEMA DE LOGIN
+        // SISTEMA DE LOGIN (INDEPENDIENTE PARA ADMIN)
         // ============================================================
         const PASSWORD = 'tencha2026';
+        const SESSION_KEY = 'tencha_admin_logged'; // Clave ÚNICA para Admin
 
         function verificarPassword() {
             const input = document.getElementById('passwordInput');
@@ -859,7 +859,7 @@
                 error.classList.remove('show');
                 document.getElementById('loginOverlay').classList.remove('active');
                 document.getElementById('mainContent').style.display = 'block';
-                localStorage.setItem('tencha_logged_in', 'true');
+                localStorage.setItem(SESSION_KEY, 'true');
                 iniciarApp();
             } else {
                 error.classList.add('show');
@@ -870,16 +870,21 @@
         }
 
         function cerrarSesion() {
-            localStorage.removeItem('tencha_logged_in');
+            localStorage.removeItem(SESSION_KEY);
             document.getElementById('mainContent').style.display = 'none';
             document.getElementById('loginOverlay').classList.add('active');
             document.getElementById('passwordInput').value = '';
             document.getElementById('passwordInput').focus();
         }
 
-        // Verificar sesión al cargar
+        function irAValidador() {
+            // Cerrar sesión en Admin y abrir Validador
+            localStorage.removeItem(SESSION_KEY);
+            window.location.href = 'validador.html';
+        }
+
         function verificarSesion() {
-            if (localStorage.getItem('tencha_logged_in') === 'true') {
+            if (localStorage.getItem(SESSION_KEY) === 'true') {
                 document.getElementById('loginOverlay').classList.remove('active');
                 document.getElementById('mainContent').style.display = 'block';
                 iniciarApp();
@@ -890,7 +895,6 @@
             }
         }
 
-        // Enter para login
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' && document.getElementById('loginOverlay').classList.contains('active')) {
                 verificarPassword();
